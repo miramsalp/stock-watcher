@@ -1,4 +1,5 @@
 import "../App.css";
+import stockLogo from 'stock.png';
 
 const LandingPage = ({ onLogin }) => {
   return (
@@ -11,7 +12,7 @@ const LandingPage = ({ onLogin }) => {
         style={{ maxWidth: "400px", margin: "0 auto", padding: "40px" }}
       >
         <div style={{ fontSize: "60px", marginBottom: "20px" }}>
-            <img src="../assets/stock.png" alt="Stock Watcher Logo" style={{ width: '80px', height: '80px' }} />
+            <img src={stockLogo} alt="Stock Watcher Logo" style={{ width: '80px', height: '80px' }} />
         </div>
 
         <h1 style={{ margin: "0 0 10px 0", color: "#1a202c" }}>
