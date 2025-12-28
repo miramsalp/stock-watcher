@@ -6,7 +6,7 @@ import StockList from "./components/StockList";
 import "./App.css";
 
 function App() {
-  const { profile, isReady, error } = useLineAuth();
+  const { profile, isReady, error, logout } = useLineAuth();
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const handleStockAdded = () => {

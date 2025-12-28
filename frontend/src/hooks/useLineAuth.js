@@ -34,5 +34,10 @@ export const useLineAuth = () => {
     initLiff();
   }, []);
 
-  return { profile, isReady, error };
+  const logout = () => {
+    liff.logout();
+    window.location.reload(); 
+  };
+
+  return { profile, isReady, error, logout };
 };
