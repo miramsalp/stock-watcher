@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const stockController = require('../controllers/stockController');
 
-router.post('/', stockController.addStockAlert);
+router.post('/', stockController.addStockAlert); 
+router.get('/', stockController.getStocks);       
+router.delete('/:id', stockController.deleteStock); 
 
 module.exports = router;

@@ -20,3 +20,25 @@ exports.addStockAlert = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.getStocks = async (req, res) => {
+    try {
+        const { userId } = req.query; 
+        if (!userId) return res.status(400).json({ error: 'User ID is required' });
+
+        const stocks = await stockModel.getUserStocks(userId);
+        res.json(stocks);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.deleteStock = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await stockModel.deleteStock(id);
+        res.json({ message: 'Deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

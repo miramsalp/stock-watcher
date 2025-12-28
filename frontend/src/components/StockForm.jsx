@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { createStockAlert } from '../services/api';
 import '../App.css';
 
-const StockForm = ({ userId }) => {
+const StockForm = ({ userId, onSuccess }) => {
   const [form, setForm] = useState({ symbol: '', target: '', condition: 'above' });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -20,6 +20,8 @@ const StockForm = ({ userId }) => {
       
       alert(`บันทึก ${form.symbol} เรียบร้อย!`);
       setForm({ symbol: '', target: '', condition: 'above' }); // Reset Form
+
+      if (onSuccess) onSuccess();
     } catch (error) {
       alert('เกิดข้อผิดพลาด: ' + error);
     } finally {

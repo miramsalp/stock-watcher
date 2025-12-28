@@ -86,3 +86,110 @@
   color: #999;
   margin-top: 40px;
 }
+
+/* Stock List Styling */
+.stock-list-container {
+  margin-top: 30px;
+}
+
+.stock-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.stock-card {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.stock-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.stock-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Logo Logic */
+.stock-logo-wrapper {
+  width: 45px;
+  height: 45px;
+  position: relative;
+}
+
+.stock-logo {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: contain;
+  background: white;
+  border: 1px solid #eee;
+}
+
+.stock-fallback-logo {
+  display: none; /* ซ่อนไว้ก่อน */
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #333;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  justify-content: center;
+  align-items: center;
+}
+
+.stock-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stock-symbol {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.stock-condition {
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-top: 2px;
+  width: fit-content;
+}
+
+.stock-condition.above { background: #e6fffa; color: #047857; }
+.stock-condition.below { background: #fff5f5; color: #c53030; }
+
+.stock-price-target {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.delete-btn {
+  background: transparent;
+  color: #999;
+  border: 1px solid #eee;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.delete-btn:hover {
+  background: #fff5f5;
+  color: #e53e3e;
+  border-color: #fc8181;
+}
