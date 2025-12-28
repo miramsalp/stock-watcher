@@ -3,7 +3,6 @@ exports.createStockAlertFlex = (stockData, currentPrice) => {
     const isAbove = condition_type === 'above';
 
     const mainColor = isAbove ? '#059669' : '#dc2626'; 
-    const badgeText = isAbove ? '📈 PRICE BREAKOUT' : '📉 PRICE DIP';
 
     return {
         type: "flex",
@@ -15,13 +14,6 @@ exports.createStockAlertFlex = (stockData, currentPrice) => {
                 type: "box",
                 layout: "vertical",
                 contents: [
-                    {
-                        type: "text",
-                        text: badgeText,
-                        color: "#ffffff",
-                        weight: "bold",
-                        size: "xs"
-                    },
                     {
                         type: "text",
                         text: String(symbol),
