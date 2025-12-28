@@ -1,10 +1,10 @@
-const client = require('../config/lineClient'); 
+const client = require('../config/lineClient');
 
 exports.sendPushMessage = async (userId, message) => {
     try {
-        await client.pushMessage(userId, message); 
-        console.log(`Sent message to ${userId}`);
+        await client.pushMessage(userId, message);
+        console.log(`LINE Sent to: ${userId}`);
     } catch (error) {
-        console.error('Line Error:', error.originalError?.response?.data || error.message);
+        console.error('LINE API Error:', error.originalError?.response?.data || error.message);
     }
 };

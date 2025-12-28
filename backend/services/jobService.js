@@ -1,30 +1,27 @@
 const stockModel = require('../models/stockModel');
 const yahooService = require('./yahooService');
-const lineClient = require('../config/lineClient');
-const { createStockAlertFlex } = require('../templates/stockAlertFlex'); 
+const lineService = require('./lineService');
+const { createStockAlertFlex } = require('../templates/stockAlertFlex');
 
 exports.checkStocksAndNotify = async () => {
-    console.log('⏳ Job Running: Checking stocks...');
-    
+    console.log('⏳ Job Running...');
     try {
         const stocks = await stockModel.getActiveStocks();
+        if (!stocks || stocks.length === 0) return;
 
         for (const stock of stocks) {
-            const { id, symbol, target_price, condition_type, user_id } = stock;
-            const currentPrice = await yahooService.getCurrentPrice(symbol);
-
+            const currentPrice = await yahooService.getCurrentPrice(stock.symbol);
             if (!currentPrice) continue;
 
             let isTriggered = false;
-            if (condition_type === 'above' && currentPrice >= target_price) isTriggered = true;
-            else if (condition_type === 'below' && currentPrice <= target_price) isTriggered = true;
+            if (stock.condition_type === 'above' && currentPrice >= stock.target_price) isTriggered = true;
+            else if (stock.condition_type === 'below' && currentPrice <= stock.target_price) isTriggered = true;
 
             if (isTriggered) {
                 const flexMsg = createStockAlertFlex(stock, currentPrice);
-
-                await lineClient.pushMessage(user_id, flexMsg);
-                await stockModel.deleteAlert(id); 
-                console.log(`Alert sent and deleted for ${symbol}`);
+                await lineService.sendPushMessage(stock.user_id, flexMsg);
+                await stockModel.deleteAlert(stock.id); 
+                console.log(`🎯 Alert Triggered: ${stock.symbol}`);
             }
         }
     } catch (error) {
