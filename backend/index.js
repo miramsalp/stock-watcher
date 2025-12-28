@@ -14,7 +14,7 @@ app.set('trust proxy', 1);
 app.use(helmet());
 
 const allowedOrigins = [
-    'https://stock-watcher-vert.vercel.app'
+    process.env.FRONTEND_URL || 'http://localhost:5173'
 ];
 
 app.use(cors({
