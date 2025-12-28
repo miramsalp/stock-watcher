@@ -42,7 +42,7 @@ const StockForm = ({ idToken, stocks, onSuccess }) => {
     );
 
     if (isDuplicate) {
-      toast.error("This alert already exists in your watchlist.");
+      toast.error("This symbol with this condition already exists in your watchlist.");
       return;
     }
 

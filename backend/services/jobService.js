@@ -32,7 +32,7 @@ exports.checkStocksAndNotify = async () => {
                 };
 
                 await lineClient.pushMessage(user_id, msg);
-                await stockModel.disableAlert(id);
+                await stockModel.deleteAlert(id);
                 console.log(`Alert sent for ${symbol}`);
             }
         }

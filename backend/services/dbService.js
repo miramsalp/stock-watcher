@@ -15,14 +15,14 @@ exports.getActiveStocks = async () => {
     return data || [];
 };
 
-exports.disableAlert = async (id) => {
+exports.deleteAlert = async (id) => {
     const { error } = await supabase
         .from('user_stocks')
-        .update({ is_active: false })
+        .delete() 
         .eq('id', id);
-
-    if (error) console.error('Supabase Update Error:', error.message);
-    else console.log(`Disabled alert for ID: ${id}`);
+    
+    if (error) throw new Error(error.message);
+    return true;
 };
 
 exports.addStock = async (stockData) => {
