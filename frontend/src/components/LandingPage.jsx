@@ -10,7 +10,9 @@ const LandingPage = ({ onLogin }) => {
         className="card"
         style={{ maxWidth: "400px", margin: "0 auto", padding: "40px" }}
       >
-        <div style={{ fontSize: "60px", marginBottom: "20px" }}>📈</div>
+        <div style={{ fontSize: "60px", marginBottom: "20px" }}>
+            <img src="/src/assets/stock.png" alt="Stock Watcher Logo" style={{ width: '80px', height: '80px' }} />
+        </div>
 
         <h1 style={{ margin: "0 0 10px 0", color: "#1a202c" }}>
           Stock Watcher
@@ -39,7 +41,7 @@ const LandingPage = ({ onLogin }) => {
       </div>
 
       <p style={{ marginTop: "30px", color: "#a0aec0", fontSize: "0.8rem" }}>
-        Developed by You © 2025
+        Stock Watcher © 2025 | Developed by Plasmarim
       </p>
     </div>
   );
