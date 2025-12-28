@@ -1,5 +1,4 @@
 import "../App.css";
-import stockLogo from "stock.png";
 
 const LandingPage = ({ onLogin }) => {
   return (
