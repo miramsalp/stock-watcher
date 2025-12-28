@@ -26,7 +26,7 @@ function App() {
           </div>
 
           <div className="card">
-            <h3 className="form-title">🔔 ตั้งแจ้งเตือนราคา</h3>
+            <h3 className="form-header">🔔 สร้างการแจ้งเตือน</h3>
             <StockForm userId={profile.userId} onSuccess={handleStockAdded} />
           </div>
         </div>
@@ -36,11 +36,21 @@ function App() {
             style={{
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "center",
+              alignItems: "baseline",
             }}
           >
-            <h2 style={{ margin: 0, fontSize: "1.5rem" }}>My Watchlist</h2>
-            <span style={{ color: "var(--text-secondary)" }}>
+            <h2
+              style={{
+                margin: 0,
+                fontSize: "1.5rem",
+                color: "var(--text-primary)",
+              }}
+            >
+              My Watchlist
+            </h2>
+            <span
+              style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}
+            >
               Real-time Monitoring
             </span>
           </div>
@@ -49,7 +59,9 @@ function App() {
         </div>
       </div>
 
-      <div className="footer">Stock Watcher © 2025 | Developed by Plasmarim</div>
+      <div className="footer">
+        Stock Watcher © 2025 | Developed by Plasmarim
+      </div>
     </div>
   );
 }
