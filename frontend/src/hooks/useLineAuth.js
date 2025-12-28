@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import liff from '@line/liff';
+import { useState, useEffect } from "react";
+import liff from "@line/liff";
 
 const LIFF_ID = import.meta.env.VITE_LIFF_ID;
 
@@ -11,33 +11,32 @@ export const useLineAuth = () => {
   useEffect(() => {
     const initLiff = async () => {
       try {
-        if (!LIFF_ID) {
-          throw new Error('Missing VITE_LIFF_ID in .env file');
-        }
+        if (!LIFF_ID) throw new Error("Missing LIFF ID");
 
         await liff.init({ liffId: LIFF_ID });
-        
+
         if (liff.isLoggedIn()) {
           const userProfile = await liff.getProfile();
           setProfile(userProfile);
-        } else {
-          liff.login();
         }
       } catch (err) {
-        console.error('LIFF Init Failed:', err);
+        console.error(err);
         setError(err.message);
       } finally {
         setIsReady(true);
       }
     };
-
     initLiff();
   }, []);
 
-  const logout = () => {
-    liff.logout();
-    window.location.reload(); 
+  const login = () => {
+    liff.login();
   };
 
-  return { profile, isReady, error, logout };
+  const logout = () => {
+    liff.logout();
+    window.location.reload();
+  };
+
+  return { profile, isReady, error, login, logout };
 };

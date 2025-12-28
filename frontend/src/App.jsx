@@ -3,10 +3,11 @@ import { useLineAuth } from "./hooks/useLineAuth";
 import UserProfile from "./components/UserProfile";
 import StockForm from "./components/StockForm";
 import StockList from "./components/StockList";
+import LandingPage from "./components/LandingPage";
 import "./App.css";
 
 function App() {
-  const { profile, isReady, error, logout } = useLineAuth();
+  const { profile, isReady, error, login, logout } = useLineAuth();
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const handleStockAdded = () => {
@@ -14,8 +15,10 @@ function App() {
   };
 
   if (error) return <div className="loading-container">Error: {error}</div>;
-  if (!isReady || !profile)
-    return <div className="loading-container">Connecting to LINE...</div>;
+  if (!isReady) return <div className="loading-container">Loading...</div>;
+  if (!profile) {
+    return <LandingPage onLogin={login} />;
+  }
 
   return (
     <div className="container">
