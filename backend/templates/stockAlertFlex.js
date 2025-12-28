@@ -1,14 +1,13 @@
 exports.createStockAlertFlex = (stockData, currentPrice) => {
     const { symbol, target_price, condition_type } = stockData;
     const isAbove = condition_type === 'above';
-    
+
     const mainColor = isAbove ? '#059669' : '#dc2626'; 
-    const bgColor = isAbove ? '#ecfdf5' : '#fef2f2'; 
     const badgeText = isAbove ? '📈 PRICE BREAKOUT' : '📉 PRICE DIP';
 
     return {
         type: "flex",
-        altText: `🔔 ${symbol} Alert: $${currentPrice}`,
+        altText: `🔔 แจ้งเตือนหุ้น ${symbol}: $${currentPrice}`,
         contents: {
             type: "bubble",
             size: "mega",
@@ -21,8 +20,7 @@ exports.createStockAlertFlex = (stockData, currentPrice) => {
                         text: badgeText,
                         color: "#ffffff",
                         weight: "bold",
-                        size: "xs",
-                        letterSpacing: "0.1rem"
+                        size: "xs"
                     },
                     {
                         type: "text",
@@ -33,7 +31,7 @@ exports.createStockAlertFlex = (stockData, currentPrice) => {
                         color: "#ffffff"
                     }
                 ],
-                backgroundColor: mainColor, 
+                backgroundColor: mainColor,
                 paddingAll: "xl"
             },
             body: {
@@ -42,7 +40,7 @@ exports.createStockAlertFlex = (stockData, currentPrice) => {
                 contents: [
                     {
                         type: "text",
-                        text: "CURRENT PRICE",
+                        text: "ราคาปัจจุบัน",
                         size: "xs",
                         color: "#8c8c8c",
                         weight: "bold"
@@ -66,7 +64,7 @@ exports.createStockAlertFlex = (stockData, currentPrice) => {
                                 layout: "baseline",
                                 spacing: "md",
                                 contents: [
-                                    { type: "text", text: "Target", color: "#8c8c8c", size: "sm", flex: 1 },
+                                    { type: "text", text: "เป้าหมาย", color: "#8c8c8c", size: "sm", flex: 1 },
                                     { type: "text", text: `$${target_price}`, color: "#111111", size: "sm", flex: 3, weight: "bold" }
                                 ]
                             },
@@ -75,8 +73,8 @@ exports.createStockAlertFlex = (stockData, currentPrice) => {
                                 layout: "baseline",
                                 spacing: "md",
                                 contents: [
-                                    { type: "text", text: "Condition", color: "#8c8c8c", size: "sm", flex: 1 },
-                                    { type: "text", text: isAbove ? "Price ≥ Target" : "Price ≤ Target", color: "#111111", size: "sm", flex: 3 }
+                                    { type: "text", text: "เงื่อนไข", color: "#8c8c8c", size: "sm", flex: 1 },
+                                    { type: "text", text: isAbove ? "ราคาสูงกว่าเป้าหมาย" : "ราคาต่ำกว่าเป้าหมาย", color: "#111111", size: "sm", flex: 3 }
                                 ]
                             }
                         ]
@@ -92,7 +90,7 @@ exports.createStockAlertFlex = (stockData, currentPrice) => {
                         type: "button",
                         action: {
                             type: "uri",
-                            label: "OPEN DASHBOARD",
+                            label: "เปิดดูหน้า Dashboard",
                             uri: "https://stock-watcher-vert.vercel.app"
                         },
                         style: "primary",
