@@ -1,15 +1,17 @@
 exports.createStockAlertFlex = (stockData, currentPrice) => {
     const { symbol, target_price, condition_type } = stockData;
     const isAbove = condition_type === 'above';
-    const mainColor = isAbove ? '#06c755' : '#ef4444'; 
-    const badgeText = isAbove ? '🚀 BREAKOUT' : '🔻 BUY DIP';
+    
+    const mainColor = isAbove ? '#059669' : '#dc2626'; 
+    const bgColor = isAbove ? '#ecfdf5' : '#fef2f2'; 
+    const badgeText = isAbove ? '📈 PRICE BREAKOUT' : '📉 PRICE DIP';
 
     return {
         type: "flex",
-        altText: `แจ้งเตือนหุ้น ${symbol}: $${currentPrice}`,
+        altText: `🔔 ${symbol} Alert: $${currentPrice}`,
         contents: {
             type: "bubble",
-            size: "mega", 
+            size: "mega",
             header: {
                 type: "box",
                 layout: "vertical",
@@ -17,55 +19,70 @@ exports.createStockAlertFlex = (stockData, currentPrice) => {
                     {
                         type: "text",
                         text: badgeText,
-                        color: mainColor,
+                        color: "#ffffff",
                         weight: "bold",
-                        size: "sm"
+                        size: "xs",
+                        letterSpacing: "0.1rem"
                     },
                     {
                         type: "text",
                         text: String(symbol),
                         weight: "bold",
                         size: "xxl",
-                        margin: "md"
+                        margin: "sm",
+                        color: "#ffffff"
                     }
-                ]
+                ],
+                backgroundColor: mainColor, 
+                paddingAll: "xl"
             },
             body: {
                 type: "box",
                 layout: "vertical",
                 contents: [
                     {
-                        type: "box",
-                        layout: "horizontal",
-                        contents: [
-                            { type: "text", text: "ราคาปัจจุบัน", color: "#8c8c8c", size: "sm" },
-                            {
-                                type: "text",
-                                text: `$${currentPrice}`,
-                                align: "end",
-                                weight: "bold",
-                                size: "lg",
-                                color: mainColor
-                            }
-                        ]
+                        type: "text",
+                        text: "CURRENT PRICE",
+                        size: "xs",
+                        color: "#8c8c8c",
+                        weight: "bold"
+                    },
+                    {
+                        type: "text",
+                        text: `$${currentPrice}`,
+                        size: "3xl",
+                        weight: "bold",
+                        color: mainColor,
+                        margin: "xs"
                     },
                     {
                         type: "box",
-                        layout: "horizontal",
+                        layout: "vertical",
+                        margin: "lg",
+                        spacing: "sm",
                         contents: [
-                            { type: "text", text: "เป้าหมายที่ตั้งไว้", color: "#8c8c8c", size: "sm" },
                             {
-                                type: "text",
-                                text: `$${target_price}`,
-                                align: "end",
-                                size: "sm",
-                                color: "#111111"
+                                type: "box",
+                                layout: "baseline",
+                                spacing: "md",
+                                contents: [
+                                    { type: "text", text: "Target", color: "#8c8c8c", size: "sm", flex: 1 },
+                                    { type: "text", text: `$${target_price}`, color: "#111111", size: "sm", flex: 3, weight: "bold" }
+                                ]
+                            },
+                            {
+                                type: "box",
+                                layout: "baseline",
+                                spacing: "md",
+                                contents: [
+                                    { type: "text", text: "Condition", color: "#8c8c8c", size: "sm", flex: 1 },
+                                    { type: "text", text: isAbove ? "Price ≥ Target" : "Price ≤ Target", color: "#111111", size: "sm", flex: 3 }
+                                ]
                             }
-                        ],
-                        margin: "md"
-                    },
-                    { type: "separator", margin: "lg" }
-                ]
+                        ]
+                    }
+                ],
+                paddingAll: "xl"
             },
             footer: {
                 type: "box",
@@ -75,13 +92,16 @@ exports.createStockAlertFlex = (stockData, currentPrice) => {
                         type: "button",
                         action: {
                             type: "uri",
-                            label: "ดู Watchlist ของฉัน",
+                            label: "OPEN DASHBOARD",
                             uri: "https://stock-watcher-vert.vercel.app"
                         },
                         style: "primary",
-                        color: mainColor
+                        color: mainColor,
+                        height: "md"
                     }
-                ]
+                ],
+                paddingAll: "xl",
+                paddingTop: "none"
             }
         }
     };
