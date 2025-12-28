@@ -23,14 +23,23 @@ const StockList = ({ userId, idToken, refreshTrigger }) => {
 
   useEffect(() => {
     if (!idToken) return;
+
     const fetchData = async () => {
       setLoading(true);
-      const data = await getUserStocks(idToken);
-      setStocks(data);
-      setLoading(false);
+      try {
+        // debug
+        console.log("Fetching stocks with token...");
+        const data = await getUserStocks(idToken);
+        setStocks(data);
+      } catch (error) {
+        console.error("Error fetching stocks:", error);
+      } finally {
+        setLoading(false);
+      }
     };
+
     fetchData();
-  }, [userId, refreshTrigger]);
+  }, [idToken, refreshTrigger]);
 
   const handleDelete = async (id) => {
     if (!window.confirm("ลบรายการนี้?")) return;
