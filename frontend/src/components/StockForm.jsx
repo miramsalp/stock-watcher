@@ -12,17 +12,29 @@ const StockForm = ({ idToken, onSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!userId) return alert("User ID not found");
+    if (!idToken) return alert("Authentication token not found");
+
+    const sanitizedSymbol = form.symbol.replace(/[^a-zA-Z0-9-.]/g, "");
+    if (sanitizedSymbol !== form.symbol) {
+      alert("ชื่อหุ้น (Symbol) มีอักขระที่ไม่ได้รับอนุญาต");
+      return;
+    }
+
+    if (parseFloat(form.target) <= 0) {
+      alert("ราคาเป้าหมายต้องเป็นค่าบวก");
+      return;
+    }
 
     setIsLoading(true);
 
     try {
-      await createStockAlert({ ...form, idToken });
-      alert(`บันทึก ${form.symbol} เรียบร้อย!`);
+      await createStockAlert({ ...form, symbol: sanitizedSymbol }, idToken);
+      alert(`บันทึก ${sanitizedSymbol} เรียบร้อย!`);
       setForm({ symbol: "", target: "", condition: "above" });
       if (onSuccess) onSuccess();
     } catch (error) {
-      alert("เกิดข้อผิดพลาด: " + error);
+      console.error("เกิดข้อผิดพลาด:", error);
+      alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
     } finally {
       setIsLoading(false);
     }

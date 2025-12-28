@@ -28,11 +28,12 @@ exports.getUserStocks = async (userId) => {
     return data;
 };
 
-exports.deleteStock = async (id) => {
+exports.deleteStock = async (id, userId) => {
     const { error } = await supabase
         .from('user_stocks')
         .delete()
-        .eq('id', id);
+        .eq('id', id)
+        .eq('user_id', userId);
 
     if (error) throw new Error(error.message);
     return true;

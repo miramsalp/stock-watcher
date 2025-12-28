@@ -37,7 +37,8 @@ exports.getStocks = async (req, res) => {
 exports.deleteStock = async (req, res) => {
     try {
         const { id } = req.params;
-        await stockModel.deleteStock(id);
+        const { userId } = req.user;
+        await stockModel.deleteStock(id, userId);
         res.json({ message: 'Deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: error.message });

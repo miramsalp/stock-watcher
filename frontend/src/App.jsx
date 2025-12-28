@@ -24,13 +24,14 @@ function App() {
     <div className="container">
       <div className="dashboard-layout">
         <div className="left-panel">
-          <div className="card">
-            <StockForm idToken={idToken} onSuccess={handleStockAdded} />
-          </div>
+          <UserProfile profile={profile} onLogout={logout} />
 
           <div className="card">
             <h3 className="form-header">🔔 สร้างการแจ้งเตือน</h3>
-            <StockForm idToken={idToken} onSuccess={handleStockAdded} />
+            <StockForm
+              idToken={idToken}
+              onSuccess={handleStockAdded}
+            />
           </div>
         </div>
 

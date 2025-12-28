@@ -4,7 +4,7 @@ const UserProfile = ({ profile, onLogout }) => {
   if (!profile) return null;
 
   return (
-    <div>
+    <div className="card">
       <div className="profile-card">
         <img src={profile.pictureUrl} alt="Profile" className="profile-img" />
         <div className="profile-info">
