@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 import { getUserStocks, deleteStock } from '../services/api';
-import '../App.css';
+
+const getColorFromSymbol = (symbol) => {
+  const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7B731', '#A3CB38'];
+  let hash = 0;
+  for (let i = 0; i < symbol.length; i++) hash = symbol.charCodeAt(i) + ((hash << 5) - hash);
+  return colors[Math.abs(hash) % colors.length];
+};
 
 const StockList = ({ userId, refreshTrigger }) => {
   const [stocks, setStocks] = useState([]);
@@ -18,57 +24,66 @@ const StockList = ({ userId, refreshTrigger }) => {
   }, [userId, refreshTrigger]);
 
   const handleDelete = async (id) => {
-    if (!confirm('ต้องการลบรายการนี้ใช่ไหม?')) return;
+    if (!window.confirm('ลบรายการนี้?')) return;
     await deleteStock(id);
-    setStocks(stocks.filter(s => s.id !== id)); 
+    setStocks(stocks.filter(s => s.id !== id));
   };
 
-  const getLogoUrl = (symbol) => {
-    return `https://logo.clearbit.com/${symbol}.com`;
-  };
-
-  if (loading) return <div style={{textAlign:'center', marginTop:20}}>Loading list...</div>;
-  if (stocks.length === 0) return <div style={{textAlign:'center', marginTop:20, color:'#999'}}>ยังไม่มีรายการแจ้งเตือน</div>;
+  if (loading) return <div style={{textAlign:'center', padding: 20}}>Loading...</div>;
+  if (stocks.length === 0) return (
+    <div style={{ textAlign:'center', padding: '40px', background: 'white', borderRadius: '16px', color: '#999', border: '2px dashed #eee' }}>
+      ยังไม่มีรายการแจ้งเตือน <br/> เพิ่มหุ้นตัวแรกทางซ้ายมือได้เลยครับ 👈
+    </div>
+  );
 
   return (
-    <div className="stock-list-container">
-      <h3 style={{marginBottom: 15}}>📋 รายการที่รอแจ้งเตือน ({stocks.length}/20)</h3>
-      
-      <div className="stock-grid">
-        {stocks.map((stock) => (
-          <div key={stock.id} className="stock-card">
+    <div className="list-grid">
+      {stocks.map((stock) => (
+        <div key={stock.id} className="stock-item-card">
+          
+          <div className="stock-left">
             
-            <div className="stock-header">
-              <div className="stock-logo-wrapper">
-                <img 
-                  src={getLogoUrl(stock.symbol)} 
-                  alt={stock.symbol}
-                  className="stock-logo"
-                  onError={(e) => {
-                    e.target.style.display = 'none'; 
-                    e.target.nextSibling.style.display = 'flex'; 
-                  }} 
-                />
-                <div className="stock-fallback-logo">{stock.symbol.substring(0, 2)}</div>
-              </div>
-              <div className="stock-info">
-                <span className="stock-symbol">{stock.symbol}</span>
-                <span className={`stock-condition ${stock.condition_type}`}>
-                   {stock.condition_type === 'above' ? '🚀 Breakout' : '🔻 Buy Dip'}
-                </span>
+            <div className="logo-container">
+              <img 
+                src={`https://financialmodelingprep.com/image-stock/${stock.symbol}.png`}
+                alt={stock.symbol}
+                className="stock-real-logo"
+                onError={(e) => {
+                  e.target.style.display = 'none'; 
+                  e.target.nextSibling.style.display = 'flex';
+                }}
+              />
+              
+              <div 
+                className="stock-fallback-avatar" 
+                style={{ backgroundColor: getColorFromSymbol(stock.symbol), display: 'none' }}
+              >
+                {stock.symbol.substring(0, 1)}
               </div>
             </div>
 
-            <div className="stock-price-target">
-              🎯 เป้าหมาย: <strong>${stock.target_price}</strong>
+            <div className="stock-details">
+              <span className="symbol-text">{stock.symbol}</span>
+              <span className="condition-badge" style={{
+                 color: stock.condition_type === 'above' ? '#047857' : '#c53030',
+                 background: stock.condition_type === 'above' ? '#d1fae5' : '#fee2e2',
+                 padding: '2px 8px', borderRadius: '4px'
+              }}>
+                {stock.condition_type === 'above' ? '🚀 Breakout' : '🔻 Buy Dip'}
+              </span>
             </div>
+          </div>
 
-            <button onClick={() => handleDelete(stock.id)} className="delete-btn">
-              ลบ
+          <div className="stock-right">
+            <span className="target-label">Target</span>
+            <span className="target-price">${stock.target_price}</span>
+            <button onClick={() => handleDelete(stock.id)} className="delete-icon-btn" title="Remove">
+              🗑️
             </button>
           </div>
-        ))}
-      </div>
+
+        </div>
+      ))}
     </div>
   );
 };
