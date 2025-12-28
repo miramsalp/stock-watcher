@@ -7,7 +7,7 @@ import LandingPage from "./components/LandingPage";
 import "./App.css";
 
 function App() {
-  const { profile, isReady, error, login, logout } = useLineAuth();
+  const { profile, idToken, isReady, error, login, logout } = useLineAuth();
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const handleStockAdded = () => {
@@ -25,12 +25,12 @@ function App() {
       <div className="dashboard-layout">
         <div className="left-panel">
           <div className="card">
-            <UserProfile profile={profile} onLogout={logout} />
+            <StockForm idToken={idToken} onSuccess={handleStockAdded} />
           </div>
 
           <div className="card">
             <h3 className="form-header">🔔 สร้างการแจ้งเตือน</h3>
-            <StockForm userId={profile.userId} onSuccess={handleStockAdded} />
+            <StockForm idToken={idToken} onSuccess={handleStockAdded} />
           </div>
         </div>
 

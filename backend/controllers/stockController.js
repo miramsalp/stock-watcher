@@ -2,7 +2,8 @@ const stockModel = require('../models/stockModel');
 
 exports.addStockAlert = async (req, res) => {
     try {
-        const { symbol, target, condition, userId } = req.body;
+        const { symbol, target, condition } = req.body;
+        const { userId } = req.user;
 
         if (!symbol || !target || !userId) {
             return res.status(400).json({ error: 'Missing required fields' });
@@ -23,7 +24,7 @@ exports.addStockAlert = async (req, res) => {
 
 exports.getStocks = async (req, res) => {
     try {
-        const { userId } = req.query; 
+        const { userId } = req.user;
         if (!userId) return res.status(400).json({ error: 'User ID is required' });
 
         const stocks = await stockModel.getUserStocks(userId);

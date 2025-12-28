@@ -5,6 +5,7 @@ const LIFF_ID = import.meta.env.VITE_LIFF_ID;
 
 export const useLineAuth = () => {
   const [profile, setProfile] = useState(null);
+  const [idToken, setIdToken] = useState(null);
   const [isReady, setIsReady] = useState(false);
   const [error, setError] = useState(null);
 
@@ -38,5 +39,5 @@ export const useLineAuth = () => {
     window.location.reload();
   };
 
-  return { profile, isReady, error, login, logout };
+  return { profile, idToken, isReady, error, login, logout };
 };

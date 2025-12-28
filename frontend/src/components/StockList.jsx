@@ -17,15 +17,15 @@ const getColorFromSymbol = (symbol) => {
   return colors[Math.abs(hash) % colors.length];
 };
 
-const StockList = ({ userId, refreshTrigger }) => {
+const StockList = ({ idToken, refreshTrigger }) => {
   const [stocks, setStocks] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!userId) return;
+    if (!idToken) return;
     const fetchData = async () => {
       setLoading(true);
-      const data = await getUserStocks(userId);
+      const data = await getUserStocks(idToken);
       setStocks(data);
       setLoading(false);
     };
@@ -34,7 +34,7 @@ const StockList = ({ userId, refreshTrigger }) => {
 
   const handleDelete = async (id) => {
     if (!window.confirm("ลบรายการนี้?")) return;
-    await deleteStock(id);
+    await deleteStock(id, idToken);
     setStocks(stocks.filter((s) => s.id !== id));
   };
 

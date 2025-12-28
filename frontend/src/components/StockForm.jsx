@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createStockAlert } from "../services/api";
 import "../App.css";
 
-const StockForm = ({ userId, onSuccess }) => {
+const StockForm = ({ idToken, onSuccess }) => {
   const [form, setForm] = useState({
     symbol: "",
     target: "",
@@ -17,7 +17,7 @@ const StockForm = ({ userId, onSuccess }) => {
     setIsLoading(true);
 
     try {
-      await createStockAlert({ ...form, userId });
+      await createStockAlert({ ...form, idToken });
       alert(`บันทึก ${form.symbol} เรียบร้อย!`);
       setForm({ symbol: "", target: "", condition: "above" });
       if (onSuccess) onSuccess();
