@@ -1,6 +1,7 @@
 const stockModel = require('../models/stockModel');
 const yahooService = require('./yahooService');
 const lineClient = require('../config/lineClient');
+const { createStockAlertFlex } = require('../templates/stockAlertFlex'); 
 
 exports.checkStocksAndNotify = async () => {
     console.log('⏳ Job Running: Checking stocks...');
@@ -15,25 +16,15 @@ exports.checkStocksAndNotify = async () => {
             if (!currentPrice) continue;
 
             let isTriggered = false;
-            
-            if (condition_type === 'above' && currentPrice >= target_price) {
-                isTriggered = true;
-            } else if (condition_type === 'below' && currentPrice <= target_price) {
-                isTriggered = true;
-            }
+            if (condition_type === 'above' && currentPrice >= target_price) isTriggered = true;
+            else if (condition_type === 'below' && currentPrice <= target_price) isTriggered = true;
 
             if (isTriggered) {
-                const emoji = condition_type === 'above' ? '🚀' : '🔻';
-                const action = condition_type === 'above' ? 'Breakout (สูงกว่า)' : 'Dip (ต่ำกว่า)';
-                
-                const msg = {
-                    type: 'text',
-                    text: `${emoji} ${symbol} ${action} เป้าหมาย!\n💵 ราคาปัจจุบัน: $${currentPrice}\n🎯 เป้าหมาย: $${target_price}`
-                };
+                const flexMsg = createStockAlertFlex(stock, currentPrice);
 
-                await lineClient.pushMessage(user_id, msg);
-                await stockModel.deleteAlert(id);
-                console.log(`Alert sent for ${symbol}`);
+                await lineClient.pushMessage(user_id, flexMsg);
+                await stockModel.deleteAlert(id); 
+                console.log(`Alert sent and deleted for ${symbol}`);
             }
         }
     } catch (error) {
