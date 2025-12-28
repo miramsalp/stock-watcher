@@ -294,6 +294,71 @@ body {
 }
 
 .logout-btn:hover {
+
   background-color: #fff5f5;
+
   border-color: #e53e3e;
+
+}
+
+
+
+/* New Progress Bar Styles */
+
+.form-footer {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-top: 15px;
+
+  margin-bottom: 15px;
+
+  gap: 15px;
+
+}
+
+
+
+.progress-container {
+
+  flex-grow: 1;
+
+  height: 8px;
+
+  background-color: #e2e8f0;
+
+  border-radius: 4px;
+
+  overflow: hidden;
+
+}
+
+
+
+.progress-bar {
+
+  height: 100%;
+
+  background-color: var(--primary-color);
+
+  border-radius: 4px;
+
+  transition: width 0.3s ease-in-out;
+
+}
+
+
+
+.progress-label {
+
+  font-size: 0.8rem;
+
+  font-weight: 600;
+
+  color: var(--text-secondary);
+
 }

@@ -1,8 +1,9 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { createStockAlert } from "../services/api";
 import "../App.css";
 
-const StockForm = ({ idToken, onSuccess }) => {
+const StockForm = ({ idToken, stocks, onSuccess }) => {
   const [form, setForm] = useState({
     symbol: "",
     target: "",
@@ -12,33 +13,60 @@ const StockForm = ({ idToken, onSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!idToken) return alert("Authentication token not found");
+    if (!idToken) {
+      toast.error("Authentication token not found");
+      return;
+    }
+
+    if (stocks.length >= 20) {
+      toast.error("You cannot add more than 20 symbols.");
+      return;
+    }
 
     const sanitizedSymbol = form.symbol.replace(/[^a-zA-Z0-9-.]/g, "");
     if (sanitizedSymbol !== form.symbol) {
-      alert("ชื่อหุ้น (Symbol) มีอักขระที่ไม่ได้รับอนุญาต");
+      toast.error("Symbol contains invalid characters.");
       return;
     }
 
     if (parseFloat(form.target) <= 0) {
-      alert("ราคาเป้าหมายต้องเป็นค่าบวก");
+      toast.error("Target price must be a positive number.");
+      return;
+    }
+
+    const isDuplicate = stocks.some(
+      (stock) =>
+        stock.symbol === sanitizedSymbol &&
+        stock.target_price === parseFloat(form.target) &&
+        stock.condition_type === form.condition
+    );
+
+    if (isDuplicate) {
+      toast.error("This alert already exists in your watchlist.");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      await createStockAlert({ ...form, symbol: sanitizedSymbol }, idToken);
-      alert(`บันทึก ${sanitizedSymbol} เรียบร้อย!`);
+      const newStock = await createStockAlert(
+        { ...form, symbol: sanitizedSymbol },
+        idToken
+      );
+      toast.success(`Added ${sanitizedSymbol} to your watchlist!`);
       setForm({ symbol: "", target: "", condition: "above" });
-      if (onSuccess) onSuccess();
+      if (onSuccess) onSuccess(newStock);
     } catch (error) {
-      console.error("เกิดข้อผิดพลาด:", error);
-      alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+      console.error("Error creating stock alert:", error);
+      const errorMessage =
+        error.response?.data?.message || "Failed to create alert.";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
+
+  const progress = (stocks.length / 20) * 100;
 
   return (
     <form onSubmit={handleSubmit}>
@@ -78,6 +106,12 @@ const StockForm = ({ idToken, onSuccess }) => {
           <option value="above">🚀 แจ้งเมื่อราคา "สูงกว่า" (Breakout)</option>
           <option value="below">🔻 แจ้งเมื่อราคา "ต่ำกว่า" (Buy Dip)</option>
         </select>
+      </div>
+      <div className="form-footer">
+        <div className="progress-container">
+          <div className="progress-bar" style={{ width: `${progress}%` }}></div>
+        </div>
+        <span className="progress-label">{stocks.length}/20</span>
       </div>
 
       <button type="submit" disabled={isLoading} className="submit-btn">

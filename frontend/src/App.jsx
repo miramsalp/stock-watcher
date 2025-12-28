@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 import { useLineAuth } from "./hooks/useLineAuth";
 import UserProfile from "./components/UserProfile";
 import StockForm from "./components/StockForm";
@@ -8,11 +9,7 @@ import "./App.css";
 
 function App() {
   const { profile, idToken, isReady, error, login, logout } = useLineAuth();
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
-
-  const handleStockAdded = () => {
-    setRefreshTrigger((prev) => prev + 1);
-  };
+  const [stocks, setStocks] = useState([]);
 
   if (error) return <div className="loading-container">Error: {error}</div>;
   if (!isReady) return <div className="loading-container">Loading...</div>;
@@ -22,13 +19,18 @@ function App() {
 
   return (
     <div className="container">
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="dashboard-layout">
         <div className="left-panel">
           <UserProfile profile={profile} onLogout={logout} />
 
           <div className="card">
             <h3 className="form-header">🔔 สร้างการแจ้งเตือน</h3>
-            <StockForm idToken={idToken} onSuccess={handleStockAdded} />
+            <StockForm
+              idToken={idToken}
+              stocks={stocks}
+              onSuccess={(newStock) => setStocks([...stocks, newStock])}
+            />
           </div>
         </div>
 
@@ -52,14 +54,14 @@ function App() {
             <span
               style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}
             >
-              Real-time Monitoring
+              ({stocks.length}/20) Real-time Monitoring
             </span>
           </div>
 
           <StockList
-            userId={profile.userId}
             idToken={idToken}
-            refreshTrigger={refreshTrigger}
+            stocks={stocks}
+            setStocks={setStocks}
           />
         </div>
       </div>
