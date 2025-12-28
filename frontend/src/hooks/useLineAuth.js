@@ -19,6 +19,9 @@ export const useLineAuth = () => {
         if (liff.isLoggedIn()) {
           const userProfile = await liff.getProfile();
           setProfile(userProfile);
+
+          const token = liff.getIDToken();
+          setIdToken(token);
         }
       } catch (err) {
         console.error(err);
