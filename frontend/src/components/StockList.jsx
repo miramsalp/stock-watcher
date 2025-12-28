@@ -17,7 +17,7 @@ const getColorFromSymbol = (symbol) => {
   return colors[Math.abs(hash) % colors.length];
 };
 
-const StockList = ({ idToken, refreshTrigger }) => {
+const StockList = ({ userId, idToken, refreshTrigger }) => {
   const [stocks, setStocks] = useState([]);
   const [loading, setLoading] = useState(true);
 
