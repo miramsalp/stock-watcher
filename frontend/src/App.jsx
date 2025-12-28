@@ -28,10 +28,7 @@ function App() {
 
           <div className="card">
             <h3 className="form-header">🔔 สร้างการแจ้งเตือน</h3>
-            <StockForm
-              idToken={idToken}
-              onSuccess={handleStockAdded}
-            />
+            <StockForm idToken={idToken} onSuccess={handleStockAdded} />
           </div>
         </div>
 
@@ -59,7 +56,11 @@ function App() {
             </span>
           </div>
 
-          <StockList userId={profile.userId} refreshTrigger={refreshTrigger} />
+          <StockList
+            userId={profile.userId}
+            idToken={idToken}
+            refreshTrigger={refreshTrigger}
+          />
         </div>
       </div>
 
