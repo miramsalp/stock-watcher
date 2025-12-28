@@ -22,7 +22,7 @@ function App() {
       <div className="dashboard-layout">
         <div className="left-panel">
           <div className="card">
-            <UserProfile profile={profile} />
+            <UserProfile profile={profile} onLogout={logout} />
           </div>
 
           <div className="card">
