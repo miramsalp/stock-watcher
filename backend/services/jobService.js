@@ -1,9 +1,17 @@
 const stockModel = require('../models/stockModel');
-const yahooService = require('./finnhubService');
+const finnhubService = require('./finnhubService');
 const lineService = require('./lineService');
 const { createStockAlertFlex } = require('../templates/stockAlertFlex');
 
+let isJobRunning = false;
+
 exports.checkStocksAndNotify = async () => {
+    if (isJobRunning) {
+        console.log('⏭️ Job already running, skipping this cycle...');
+        return;
+    }
+    
+    isJobRunning = true;
     console.log('⏳ Job Running...');
     try {
         const stocks = await stockModel.getActiveStocks();
@@ -13,7 +21,7 @@ exports.checkStocksAndNotify = async () => {
 
         for (const stock of stocks) {
             await sleep(2000); 
-            const currentPrice = await yahooService.getCurrentPrice(stock.symbol);
+            const currentPrice = await finnhubService.getCurrentPrice(stock.symbol);
             if (!currentPrice) continue;
 
             let isTriggered = false;
@@ -29,5 +37,7 @@ exports.checkStocksAndNotify = async () => {
         }
     } catch (error) {
         console.error('Job Error:', error.message);
+    } finally {
+        isJobRunning = false;
     }
 };
