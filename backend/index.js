@@ -44,6 +44,6 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     
     // Start Job
-    setInterval(() => jobService.checkStocksAndNotify(), 60000);
+    setInterval(() => jobService.checkStocksAndNotify(), 300_000);
     jobService.checkStocksAndNotify();
 });
