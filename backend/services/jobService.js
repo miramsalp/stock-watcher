@@ -9,7 +9,10 @@ exports.checkStocksAndNotify = async () => {
         const stocks = await stockModel.getActiveStocks();
         if (!stocks || stocks.length === 0) return;
 
+        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
         for (const stock of stocks) {
+            await sleep(2000);
             const currentPrice = await yahooService.getCurrentPrice(stock.symbol);
             if (!currentPrice) continue;
 
