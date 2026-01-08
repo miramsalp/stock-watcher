@@ -1,5 +1,5 @@
 const stockModel = require('../models/stockModel');
-const yahooService = require('./yahooService');
+const yahooService = require('./finnhubService');
 const lineService = require('./lineService');
 const { createStockAlertFlex } = require('../templates/stockAlertFlex');
 
@@ -12,7 +12,7 @@ exports.checkStocksAndNotify = async () => {
         const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
         for (const stock of stocks) {
-            await sleep(5000); 
+            await sleep(2000); 
             const currentPrice = await yahooService.getCurrentPrice(stock.symbol);
             if (!currentPrice) continue;
 
